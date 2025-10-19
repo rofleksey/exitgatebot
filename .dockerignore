@@ -1,0 +1,13 @@
+.idea/
+data/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+exitgatebot
+**/node_modules
+scripts
+config.yaml
