@@ -97,6 +97,8 @@ func runNotifier(_ *cobra.Command, _ []string) {
 	do.Provide(di, openai.NewClient)
 	do.Provide(di, checker.New)
 
+	go do.MustInvoke[*twitch.Client](di).RunRefreshLoop(appCtx)
+
 	go func() {
 		sigint := make(chan os.Signal, 1)
 		signal.Notify(sigint, os.Interrupt)
