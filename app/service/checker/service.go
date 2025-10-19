@@ -46,6 +46,8 @@ func (s *Service) runCheck(ctx context.Context) {
 				slog.Any("error", err),
 			)
 		}
+
+		time.Sleep(5 * time.Second)
 	}
 }
 
