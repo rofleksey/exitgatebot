@@ -17,7 +17,4 @@ RUN apk update && \
     update-ca-certificates && \
     ulimit -n 100000
 COPY --from=apiBuilder /opt/exitgatebot /opt/exitgatebot
-EXPOSE 8080
-HEALTHCHECK --interval=10s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8080/v1/healthz || exit 1
 CMD [ "./exitgatebot", "run" ]
