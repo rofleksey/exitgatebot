@@ -112,14 +112,22 @@ func (s *Service) notifyNewComment(ctx context.Context, slogger *slog.Logger, pr
 	}
 
 	notificationText := fmt.Sprintf(notificationFormat, summary)
-	if err = s.twitchClient.SendMessage(profile.Username, notificationText); err != nil {
-		return fmt.Errorf("SendMessage: %w", err)
-	}
 
-	slogger.Info("Successfully reacted to comment",
-		slog.String("message", notificationText),
-		slog.Bool("telegram", true),
-	)
+	if !s.cfg.Twitch.DisableNotifications {
+		if err = s.twitchClient.SendMessage(profile.Username, notificationText); err != nil {
+			return fmt.Errorf("SendMessage: %w", err)
+		}
+
+		slogger.Info("Successfully reacted to comment",
+			slog.String("message", notificationText),
+			slog.Bool("telegram", true),
+		)
+	} else {
+		slogger.Info("Would react to comment, but notifications are disabled",
+			slog.String("message", notificationText),
+			slog.Bool("telegram", true),
+		)
+	}
 
 	return nil
 }

@@ -51,6 +51,8 @@ type Twitch struct {
 	Username string `yaml:"username" example:"PogChamp123" validate:"required"`
 	// User refresh token of the bot account
 	RefreshToken string `yaml:"refresh_token" example:"v1.abc123def456ghi789jkl012mno345pqr678stu901vwx234yz567" validate:"required"`
+	// Disable notifications
+	DisableNotifications bool `yaml:"disable_notifications" example:"false"`
 }
 
 type Steam struct {

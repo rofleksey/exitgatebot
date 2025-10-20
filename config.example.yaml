@@ -31,6 +31,9 @@ twitch:
   # User refresh token of the bot account
   refresh_token: v1.abc123def456ghi789jkl012mno345pqr678stu901vwx234yz567
 
+  # Disable notifications
+  disable_notifications: true
+
 steam:
   # Check interval in minutes
   check_interval: 10
@@ -47,4 +50,4 @@ openai:
 
 profiles:
   - steam_link: "https://steamcommunity.com/id/Maznevich"
-    username: Maznevich
+    username: maznevich
