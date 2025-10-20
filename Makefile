@@ -20,4 +20,4 @@ build:
 
 .PHONY: run
 run:
-	@./exitgatebot server
+	@./exitgatebot run
