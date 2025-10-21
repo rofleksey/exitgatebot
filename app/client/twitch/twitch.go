@@ -18,13 +18,14 @@ type Client struct {
 }
 
 func NewClient(di *do.Injector) (*Client, error) {
+	ctx := do.MustInvoke[context.Context](di)
 	cfg := do.MustInvoke[*config.Config](di)
 
 	httpClient := &http.Client{
 		Timeout: 10 * time.Second,
 	}
 
-	helixClient, err := helix.NewClient(&helix.Options{
+	helixClient, err := helix.NewClientWithContext(ctx, &helix.Options{
 		ClientID:     cfg.Twitch.ClientID,
 		ClientSecret: cfg.Twitch.ClientSecret,
 		RefreshToken: cfg.Twitch.RefreshToken,

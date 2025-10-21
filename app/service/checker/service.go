@@ -15,7 +15,7 @@ import (
 	"github.com/samber/do"
 )
 
-const notificationFormat = "У тебя появился новый комментарий в профиле PogChamp %s"
+const notificationFormat = "PogChamp %s"
 
 type Service struct {
 	cfg          *config.Config
