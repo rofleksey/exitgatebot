@@ -15,7 +15,7 @@ import (
 	"github.com/samber/do"
 )
 
-const notificationFormat = "PogChamp %s"
+const notificationFormat = "DarkMode %s"
 
 type Service struct {
 	cfg          *config.Config

@@ -20,7 +20,7 @@ func TestMaznevich(t *testing.T) {
 	client, err := NewClient(di)
 	require.NoError(t, err)
 
-	summary, err := client.SummarizeComment(context.Background(), "You are gonna die alone in your room still being a virgin, cause you are ugly and toxic af.")
+	summary, err := client.SummarizeComment(context.Background(), "-rep you should lose some weight, idiot. Maybe go to gym instead of being a toxic trash in dbd")
 	require.NoError(t, err)
 
 	assert.NotEmpty(t, summary)
