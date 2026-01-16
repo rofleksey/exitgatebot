@@ -15,7 +15,7 @@ import (
 	"github.com/samber/do"
 )
 
-const firstMessageReplyText = "sosal? sosal? sosal? sosal?"
+const firstMessageReplyText = "Hello fucking burger? Sosal?"
 
 var englishRegex = regexp.MustCompile(`^[a-zA-Z0-9\s\p{P}]+$`)
 
