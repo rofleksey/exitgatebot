@@ -4,7 +4,7 @@ import (
 	"context"
 	"exitgatebot/app/client/openai"
 	"exitgatebot/app/client/steam"
-	"exitgatebot/app/client/twitch"
+	"exitgatebot/app/client/twitch_api"
 	"exitgatebot/app/config"
 	"fmt"
 	"log/slog"
@@ -19,7 +19,7 @@ const notificationFormat = "DarkMode %s"
 
 type Service struct {
 	cfg          *config.Config
-	twitchClient *twitch.Client
+	twitchClient *twitch_api.Client
 	steamClient  *steam.Client
 	openaiClient *openai.Client
 	db           *CommentDatabase
@@ -28,7 +28,7 @@ type Service struct {
 func New(di *do.Injector) (*Service, error) {
 	return &Service{
 		cfg:          do.MustInvoke[*config.Config](di),
-		twitchClient: do.MustInvoke[*twitch.Client](di),
+		twitchClient: do.MustInvoke[*twitch_api.Client](di),
 		steamClient:  do.MustInvoke[*steam.Client](di),
 		openaiClient: do.MustInvoke[*openai.Client](di),
 		db:           newCommentDatabase(),

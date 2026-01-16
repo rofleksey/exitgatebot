@@ -1,4 +1,4 @@
-package twitch
+package twitch_api
 
 import (
 	"context"
@@ -96,6 +96,33 @@ func (c *Client) SendMessage(channel, text string) error {
 	return nil
 }
 
+func (c *Client) ReplyMessage(channel, parentMessageID, text string) error {
+	broadcasterID, err := c.GetUserIDByUsername(channel)
+	if err != nil {
+		return fmt.Errorf("failed to get broadcaster id: %v", err)
+	}
+
+	senderID, err := c.GetUserIDByUsername(c.cfg.Twitch.Username)
+	if err != nil {
+		return fmt.Errorf("failed to get sender id: %v", err)
+	}
+
+	resp, err := c.userClient.SendChatMessage(&helix.SendChatMessageParams{
+		BroadcasterID:        broadcasterID,
+		SenderID:             senderID,
+		Message:              text,
+		ReplyParentMessageID: parentMessageID,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to send message: %v", err)
+	}
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("failed to send message: status %d: %s", resp.StatusCode, resp.ErrorMessage)
+	}
+
+	return nil
+}
+
 func (c *Client) refreshToken() {
 	slog.Debug("Refreshing twitch access token",
 		slog.String("username", c.cfg.Twitch.Username),
@@ -130,4 +157,8 @@ func (c *Client) RunRefreshLoop(ctx context.Context) {
 			c.refreshToken()
 		}
 	}
+}
+
+func (c *Client) AccessToken() string {
+	return c.userClient.GetUserAccessToken()
 }

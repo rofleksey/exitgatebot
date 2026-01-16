@@ -4,7 +4,8 @@ import (
 	"context"
 	"exitgatebot/app/client/openai"
 	"exitgatebot/app/client/steam"
-	"exitgatebot/app/client/twitch"
+	"exitgatebot/app/client/twitch_api"
+	"exitgatebot/app/client/twitch_irc"
 	"exitgatebot/app/config"
 	"exitgatebot/app/service/checker"
 	"exitgatebot/app/util/mylog"
@@ -92,12 +93,16 @@ func runNotifier(_ *cobra.Command, _ []string) {
 	tracing := telemetry.NewTracing(cfg, tel.Tracer)
 	do.ProvideValue(di, tracing)
 
-	do.Provide(di, twitch.NewClient)
+	do.Provide(di, twitch_api.NewClient)
+	do.Provide(di, twitch_irc.NewClient)
 	do.Provide(di, steam.NewClient)
 	do.Provide(di, openai.NewClient)
 	do.Provide(di, checker.New)
 
-	go do.MustInvoke[*twitch.Client](di).RunRefreshLoop(appCtx)
+	go do.MustInvoke[*twitch_api.Client](di).RunRefreshLoop(appCtx)
+	go do.MustInvoke[*twitch_irc.Client](di).RunRefreshLoop(appCtx)
+	go do.MustInvoke[*twitch_irc.Client](di).RunConnectLoop(appCtx)
+	go do.MustInvoke[*checker.Service](di).RunCheckLoop(appCtx)
 
 	go func() {
 		sigint := make(chan os.Signal, 1)
@@ -109,7 +114,7 @@ func runNotifier(_ *cobra.Command, _ []string) {
 		cancel()
 	}()
 
-	do.MustInvoke[*checker.Service](di).RunCheckLoop(appCtx)
+	<-appCtx.Done()
 
 	slog.Info("Waiting for services to finish...")
 	_ = di.Shutdown()

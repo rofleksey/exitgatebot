@@ -6,6 +6,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.10.3
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/elliotchance/pie/v2 v2.9.1
+	github.com/gempir/go-twitch-irc/v4 v4.3.1
 	github.com/getsentry/sentry-go v0.35.3
 	github.com/getsentry/sentry-go/otel v0.35.3
 	github.com/go-playground/validator/v10 v10.27.0
