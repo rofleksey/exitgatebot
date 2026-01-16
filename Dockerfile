@@ -14,7 +14,6 @@ ENV CGO_ENABLED=0
 WORKDIR /opt
 RUN apk update && \
     apk add --no-cache curl ca-certificates && \
-    update-ca-certificates && \
-    ulimit -n 100000
+    update-ca-certificates
 COPY --from=apiBuilder /opt/exitgatebot /opt/exitgatebot
 CMD [ "./exitgatebot", "run" ]
