@@ -3,14 +3,12 @@ package mylog
 import (
 	"context"
 	"exitgatebot/app/config"
-	"exitgatebot/app/util/telemetry"
 	"log/slog"
 	"os"
 
 	"github.com/phsym/console-slog"
 	slogmulti "github.com/samber/slog-multi"
 	slogtelegram "github.com/samber/slog-telegram/v2"
-	"go.opentelemetry.io/contrib/bridges/otelslog"
 	semconv "go.opentelemetry.io/otel/semconv/v1.24.0"
 	"go.szostok.io/version"
 )
@@ -22,7 +20,7 @@ func Preinit() {
 	})))
 }
 
-func Init(cfg *config.Config, tel *telemetry.Telemetry) error {
+func Init(cfg *config.Config) error {
 	importantAttrs := []slog.Attr{
 		slog.String(string(semconv.ServiceNameKey), cfg.ServiceName),
 		slog.String(string(semconv.ServiceVersionKey), version.Get().Version),
@@ -33,13 +31,6 @@ func Init(cfg *config.Config, tel *telemetry.Telemetry) error {
 		AddSource: true,
 		Level:     slog.LevelDebug,
 	}))
-
-	if cfg.Telemetry.Enabled {
-		router = router.Add(otelslog.NewHandler(cfg.ServiceName,
-			otelslog.WithSource(true),
-			otelslog.WithLoggerProvider(tel.LogProvider),
-		).WithAttrs(importantAttrs))
-	}
 
 	if cfg.Log.Telegram.Token != "" {
 		router = router.Add(
